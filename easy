@@ -1,0 +1,29 @@
+import java.sql.*;
+
+public class FetchEmployeeData {
+    static final String url = "jdbc:mysql://localhost:3306/ANA"; 
+    static final String userName = "root";
+    static final String password = "12345678";
+
+    public static void main(String[] args) {
+        String query = "SELECT EmpID, Name, Salary FROM Employee"; 
+
+        try (Connection connection = DriverManager.getConnection(url, userName, password);
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            System.out.println("EmpID\tName\tSalary");
+            System.out.println("-------------------------");
+
+            while (rs.next()) {
+                int empID = rs.getInt("EmpID");
+                String name = rs.getString("Name");
+                double salary = rs.getDouble("Salary");
+                System.out.println(empID + "\t" + name + "\t" + salary);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
